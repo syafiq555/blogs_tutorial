@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +18,9 @@ class BlogController extends Controller
      */
     public function index()
     {
-        //
+        $blogs = Blog::all();
+
+        return view('blogs.index', compact('blogs'));
     }
 
     /**
@@ -24,7 +30,7 @@ class BlogController extends Controller
      */
     public function create()
     {
-        //
+        return view('blogs.create');
     }
 
     /**
@@ -35,7 +41,14 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $blog = new Blog();
+        $blog->title = $request->title;
+        $blog->body = $request->body;
+        $blog->user_id = auth()->user()->id;
+
+        $blog->save();
+
+        return redirect()->route('blogs.index');
     }
 
     /**
@@ -46,7 +59,7 @@ class BlogController extends Controller
      */
     public function show(Blog $blog)
     {
-        //
+        return view('blogs.show', compact('blog'));
     }
 
     /**
@@ -57,7 +70,7 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog)
     {
-        //
+        return view('blogs.edit', compact('blog'));
     }
 
     /**
@@ -69,7 +82,12 @@ class BlogController extends Controller
      */
     public function update(Request $request, Blog $blog)
     {
-        //
+        // update blog
+        $blog->title = $request->title;
+        $blog->body = $request->body;
+        $blog->save();
+
+        return redirect()->route('blogs.index');
     }
 
     /**
@@ -80,6 +98,7 @@ class BlogController extends Controller
      */
     public function destroy(Blog $blog)
     {
-        //
+        $blog->delete();
+        return redirect()->route('blogs.index');
     }
 }
