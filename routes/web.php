@@ -7,10 +7,19 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/blogs', 'BlogController@index')->name('blogs.index');
-Route::get('/blogs/create', 'BlogController@create')->name('blogs.create');
-Route::get('/blogs/{blog}/edit', 'BlogController@edit')->name('blogs.edit');
-Route::delete('/blogs/{blog}', 'BlogController@destroy')->name('blogs.destroy');
-Route::put('/blogs/{blog}', 'BlogController@update')->name('blogs.update');
-Route::get('/blogs/{blog}', 'BlogController@show')->name('blogs.show');
-Route::post('/blogs', 'BlogController@store')->name('blogs.store');
+/**
+ * Boleh plih either 2
+ */
+// Route::group([
+//     'prefix' => 'blogs',
+//     'as' => 'blogs.',
+// ], function() {
+//     Route::get('/', 'BlogController@index')->name('index');
+//     Route::get('/create', 'BlogController@create')->name('create');
+//     Route::get('/{blog}/edit', 'BlogController@edit')->name('edit');
+//     Route::delete('/{blog}', 'BlogController@destroy')->name('destroy');
+//     Route::put('/{blog}', 'BlogController@update')->name('update');
+//     Route::get('/{blog}', 'BlogController@show')->name('show');
+//     Route::post('/', 'BlogController@store')->name('store');
+// });
+Route::resource('/blogs', 'BlogController');
